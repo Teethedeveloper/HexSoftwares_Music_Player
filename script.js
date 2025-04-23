@@ -10,7 +10,7 @@ const currentTimeEl = document.getElementById("current-time");
 const durationEl = document.getElementById("duration");
 const visualizer = document.getElementById("visualizer");
 const errorMessage = document.getElementById("error-message");
-
+const volumeSlider = document.getElementById("volume-slider");
 const allSongs = [
   {
     id: 0,
@@ -202,6 +202,12 @@ const stopSong = () => {
   currentTimeEl.textContent = "0:00";
   durationEl.textContent = "0:00";
 
+  // Reset visualizer bars
+  const visualizerBars = visualizer.querySelectorAll("div");
+  visualizerBars.forEach((bar) => {
+    bar.style.height = "0%";
+  });
+ 
   setPlayerDisplay();
   playPauseButton.innerHTML = '<i class="fa fa-play"></i>';
   setPlayButtonAccessibleText();
@@ -263,34 +269,6 @@ const setPlayerDisplay = () => {
   albumArt.src = currentCover || "./defaults/4673541.jpg";
 };
 
-// Update progress bar and countdown timer as the song plays
-audio.addEventListener("timeupdate", () => {
-  if (audio.duration) {
-    const progressPercent = (audio.currentTime / audio.duration) * 100;
-    progress.style.width = `${progressPercent}%`;
-
-    // Calculate remaining time (countdown)
-    const remainingTime = audio.duration - audio.currentTime;
-    const remainingMinutes = Math.floor(remainingTime / 60);
-    const remainingSeconds = Math.floor(remainingTime % 60);
-
-    currentTimeEl.textContent = `${remainingMinutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-
-    // Display total duration
-    const durationMinutes = Math.floor(audio.duration / 60);
-    const durationSeconds = Math.floor(audio.duration % 60);
-    durationEl.textContent = `${durationMinutes}:${durationSeconds < 10 ? "0" : ""}${durationSeconds}`;
-  }
-});
-
-progressContainer.addEventListener("click", (e) => {
-  const width = progressContainer.clientWidth;
-  const clickX = e.offsetX;
-  const duration = audio.duration;
-
-  audio.currentTime = (clickX / width) * duration;
-});
-
 const createVisualizerBars = () => {
   for (let i = 0; i < 10; i++) {
     const bar = document.createElement("div");
@@ -324,6 +302,43 @@ const showError = (message) => {
   }, 5000);
 };
 
+audio.volume = volumeSlider.value;
+
+volumeSlider.addEventListener("input", (event) => {
+  audio.volume = event.target.value;
+});
+// Update progress bar and countdown timer as the song plays
+audio.addEventListener("timeupdate", () => {
+  if (audio.duration) {
+    const progressPercent = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = `${progressPercent}%`;
+
+    // Calculate remaining time (countdown)
+    const remainingTime = audio.duration - audio.currentTime;
+    const remainingMinutes = Math.floor(remainingTime / 60);
+    const remainingSeconds = Math.floor(remainingTime % 60);
+
+    currentTimeEl.textContent = `${remainingMinutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+
+    // Display total duration
+    const durationMinutes = Math.floor(audio.duration / 60);
+    const durationSeconds = Math.floor(audio.duration % 60);
+    durationEl.textContent = `${durationMinutes}:${durationSeconds < 10 ? "0" : ""}${durationSeconds}`;
+  }
+
+  const visualizerBars = visualizer.querySelectorAll("div");
+    visualizerBars.forEach((bar) => {
+      const randomHeight = Math.random() * 100; // Random height for bars
+      bar.style.height = `${randomHeight}%`;
+    });
+});
+progressContainer.addEventListener("click", (e) => {
+  const width = progressContainer.clientWidth;
+  const clickX = e.offsetX;
+  const duration = audio.duration;
+
+  audio.currentTime = (clickX / width) * duration;
+});
 playPauseButton.addEventListener("click", togglePlayPause);
 stopButton.addEventListener("click", stopSong);
 nextButton.addEventListener("click", playNextSong);

@@ -60,8 +60,8 @@ body {
 }
 
 .player-content {
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
@@ -256,19 +256,143 @@ body {
   color: #aaa;
 }
 
+/* Highlighted song in the playlist */
+.playlist-song.highlighted {
+  background-color: #1db954; /*  green */
+  color: white;
+  border-radius: 5px;
+}
+
+/* General Volume Control Styles */
+#volume-slider {
+  writing-mode: vertical-lr; /* Rotate the slider vertically */
+  -webkit-appearance: none; /* Remove default browser styling */
+  appearance: none; /* Standard property */
+  width: 10px; /* Track width */
+  height: 100px; /* Track height */
+  background: #333; /* Track background */
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: height 0.3s ease, width 0.3s ease;
+  transform: rotate(180deg); /* Flip the slider to make "up" the max value */
+}
+
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default browser styling */
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #1db954; /* Thumb color */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+#volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #1db954; /* Thumb color */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+#volume-slider::-ms-thumb {
+  width: 14px;
+  height: 14px;
+  background: #1db954; /* Thumb color */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
 /* Responsive Design */
-@media (max-width: 768px) {
-  .playlist-songs {
-    flex-direction: row;
-    overflow-x: auto;
-    max-height: none;
-    gap: 10px;
+
+/* Large Screens (Desktops) */
+@media (min-width: 1025px) {
+  .container {
+    max-width: 1200px;
+    padding: 20px;
   }
 
-  .playlist-song {
+  .album-art img {
+    width: 300px;
+    height: 300px;
+  }
+
+  .song-title {
+    font-size: 1.8rem;
+  }
+
+  .song-artist {
+    font-size: 1.4rem;
+  }
+
+  .playlist-songs {
+    max-height: 400px;
+  }
+
+  .player-buttons button {
+    font-size: 1.5rem;
+  }
+}
+
+/* Medium Screens (Tablets) */
+@media (max-width: 1024px) {
+  .container {
+    max-width: 900px;
+    padding: 15px;
+  }
+
+  .album-art img {
+    width: 250px;
+    height: 250px;
+  }
+
+  .song-title {
+    font-size: 1.5rem;
+  }
+
+  .song-artist {
+    font-size: 1.2rem;
+  }
+
+  .playlist-songs {
+    max-height: 300px;
+  }
+
+  .player-buttons button {
+    font-size: 1.3rem;
+  }
+
+  .volume-control {
+    height: 100px; /* Adjust height */
+  }
+
+  #volume-slider {
+    height: 80px; /* Adjust slider height */
+  }
+
+  #volume-slider::-webkit-slider-thumb,
+  #volume-slider::-moz-range-thumb,
+  #volume-slider::-ms-thumb {
+    width: 12px;
+    height: 12px; /* Adjust thumb size */
+  }
+}
+
+/* Small Screens (Phones) */
+@media (max-width: 768px) {
+  .container {
+    max-width: 600px;
+    padding: 10px;
+  }
+
+  .player-content {
     flex-direction: column;
     align-items: center;
-    min-width: 150px;
+    gap: 20px;
   }
 
   .album-art img {
@@ -284,10 +408,79 @@ body {
     font-size: 1rem;
   }
 
-  .playlist-song.highlighted {
-    background-color: #1db954;
-    color: #fff;
-    transform: scale(1.02);
-    transition: all 0.3s ease;
+  .playlist-songs {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .player-buttons button {
+    font-size: 1.2rem;
+  }
+
+  .volume-control {
+    height: 80px; /* Further reduce height */
+  }
+
+  #volume-slider {
+    height: 60px; /* Further reduce slider height */
+  }
+
+  #volume-slider::-webkit-slider-thumb,
+  #volume-slider::-moz-range-thumb,
+  #volume-slider::-ms-thumb {
+    width: 10px;
+    height: 10px; /* Further reduce thumb size */
   }
 }
+
+/* Extra Small Screens (Compact Phones) */
+@media (max-width: 480px) {
+  .container {
+    max-width: 100%;
+    padding: 5px;
+  }
+
+  .player-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .album-art img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .song-title {
+    font-size: 1rem;
+  }
+
+  .song-artist {
+    font-size: 0.9rem;
+  }
+
+  .playlist-songs {
+    max-height: 150px;
+    overflow-y: auto;
+  }
+
+  .player-buttons button {
+    font-size: 1rem;
+  }
+
+  .volume-control {
+    height: 60px; /* Smallest height */
+  }
+
+  #volume-slider {
+    height: 50px; /* Smallest slider height */
+  }
+
+  #volume-slider::-webkit-slider-thumb,
+  #volume-slider::-moz-range-thumb,
+  #volume-slider::-ms-thumb {
+    width: 8px;
+    height: 8px; /* Smallest thumb size */
+  }
+}
+
